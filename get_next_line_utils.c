@@ -2,51 +2,42 @@
 #include <stdio.h>
 #include <fcntl.h>
 
-char	*read_op(int fd, size_t b)
+static char	*read_op(int fd, size_t b)
 {
 	ssize_t	read_b;
 
-	static char	buffer[1024];
+	static char	buffer[BUFFER_SIZE];
 	read_b = read(fd, buffer, b);
 	if (read_b > 0)
 		buffer[read_b] = '\0';
 	return (buffer);
 }
 
-size_t	total_bytes(int fd)
+char	*parse_line(int fd)
 {
-	ssize_t	i;
+	size_t	i;
+	size_t	j;
 	char	*f;
+	char	*holder;
 
-	i = 1;
-	f = read_op(fd, i);
-	while (f[i])
+	f = read_op(fd, BUFFER_SIZE);
+	i = 0;
+	j = 0;
+	while (f[i] != '\n' && f[i])
 	{
-		f = read_op(fd, i);
 		i++;
 	}
-	return (i);
-}
-
-void	parse_line(int fd)
-{
-	size_t	bytes;
-	char *f;
-
-	bytes = 0;
-	f = read_op(fd, total_bytes(fd));
-	while (f[bytes] != '\n')
+	holder = malloc(sizeof(char) * i);
+	while (j < i)
 	{
-		if (!f[bytes])
-			return ;
-		if (f[bytes] == '\n')
-			read_op(fd, bytes);
-		bytes++;
+		holder[j] = f[j];
+		j++;
 	}
+	return (holder);
 }
 
 int	main()
 {
-	int fd = open("/home/mariober/Downloads/get_next_line/test.txt", O_RDONLY);
-	parse_line(fd);
+	int fd = open("/home/lenovo/Descargas/get_next_line/test.txt", O_RDONLY);
+	printf("%s\n", parse_line(fd));
 }
