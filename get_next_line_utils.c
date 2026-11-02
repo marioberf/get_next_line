@@ -1,43 +1,75 @@
 #include "get_next_line.h"
-#include <stdio.h>
-#include <fcntl.h>
 
-static char	*read_op(int fd, size_t b)
-{
-	ssize_t	read_b;
-
-	static char	buffer[BUFFER_SIZE];
-	read_b = read(fd, buffer, b);
-	if (read_b > 0)
-		buffer[read_b] = '\0';
-	return (buffer);
-}
-
-char	*parse_line(int fd)
+static size_t	ft_strlen(char *s)
 {
 	size_t	i;
-	size_t	j;
-	char	*f;
-	char	*holder;
 
-	f = read_op(fd, BUFFER_SIZE);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+Parser	truncated(char *s, char dlmr) // this goes to the stash
+{
+	Parser	p;
+	size_t	i;
+	size_t	j;
+	size_t	k;
+	size_t	flag;
+
 	i = 0;
 	j = 0;
-	while (f[i] != '\n' && f[i])
+	k = 0;
+	flag = 0;
+	while (s[i])
 	{
+		if (s[i] == dlmr)
+			flag = 1;
+		while (s[i + j] && flag)
+		{
+			j++;
+		}
+		if (flag)
+			break ;
 		i++;
 	}
-	holder = malloc(sizeof(char) * i);
+	p.str = malloc(sizeof(char) * j);
+	while ((k < j) && s[i + k])
+	{
+		p.str[k] = s[i + k];
+		k++;
+	}
+	p.str_len = ft_strlen(p.str);
+	return (p);
+}
+
+Parser	line_parse(char *s, char dlmr) // to return
+{
+	Parser	p;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (s[i] != dlmr && s[i])
+		i++;
+	p.str = malloc(sizeof(char) * i);
 	while (j < i)
 	{
-		holder[j] = f[j];
+		p.str[j] = s[j];
 		j++;
 	}
-	return (holder);
+	p.str_len = ft_strlen(p.str);
+	return (p);
 }
+
+/* #include <stdio.h>
 
 int	main()
 {
-	int fd = open("/home/lenovo/Descargas/get_next_line/test.txt", O_RDONLY);
-	printf("%s\n", parse_line(fd));
-}
+	char *str = "Hello\nWo\nrld";
+	printf("%zu\n", line_parse(str, '\n').str);
+	printf("%zu\n", truncated(str, '\n').str);
+	return (0);
+} */
