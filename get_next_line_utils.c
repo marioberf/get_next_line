@@ -24,7 +24,7 @@ Parser	truncated(char *s, char dlmr) // this goes to the stash
 	flag = 0;
 	while (s[i])
 	{
-		if (s[i] == dlmr)
+		if (s[i - 1] == dlmr)
 			flag = 1;
 		while (s[i + j] && flag)
 		{
@@ -69,7 +69,7 @@ Parser	line_parse(char *s, char dlmr) // to return
 int	main()
 {
 	char *str = "Hello\nWo\nrld";
-	printf("%zu\n", line_parse(str, '\n').str);
-	printf("%zu\n", truncated(str, '\n').str);
+	printf("%s\n", line_parse(str, '\n').str);
+	printf("%s\n", truncated(str, '\n').str);
 	return (0);
 } */
