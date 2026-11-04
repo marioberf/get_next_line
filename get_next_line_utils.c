@@ -27,9 +27,7 @@ Parser	truncated(char *s, char dlmr) // this goes to the stash
 		if (s[i - 1] == dlmr)
 			flag = 1;
 		while (s[i + j] && flag)
-		{
 			j++;
-		}
 		if (flag)
 			break ;
 		i++;
@@ -52,7 +50,7 @@ Parser	line_parse(char *s, char dlmr) // to return
 
 	i = 0;
 	j = 0;
-	while (s[i] != dlmr && s[i])
+	while (s[i - 1] != dlmr && s[i])
 		i++;
 	p.str = malloc(sizeof(char) * i);
 	while (j < i)
