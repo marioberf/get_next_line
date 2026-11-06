@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 
-static size_t	ft_strlen(char *s)
+size_t	ft_strlen(char *s)
 {
 	size_t	i;
 
@@ -10,41 +10,56 @@ static size_t	ft_strlen(char *s)
 	return (i);
 }
 
-Parser	truncated(char *s, char dlmr) // this goes to the stash
+char	*join(char *buffer, char *stash)
 {
-	Parser	p;
 	size_t	i;
 	size_t	j;
-	size_t	k;
-	size_t	flag;
+	char	*str;
 
+	str = malloc(ft_strlen(buffer) + ft_strlen(stash) + 1);
 	i = 0;
 	j = 0;
-	k = 0;
-	flag = 0;
+	while (i < ft_strlen(buffer))
+	{
+		str[i] = buffer[i];
+		i++;
+	}
+	while (j < ft_strlen(stash))
+	{
+		str[i + j] = stash[j];
+	}
+	str[i + j] = '\0';
+	free(stash);
+	return (str);
+}
+
+char	*truncated(char *s, char dlmr)
+{
+	char	*cp;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
 	while (s[i])
 	{
-		if (s[i - 1] == dlmr)
-			flag = 1;
-		while (s[i + j] && flag)
-			j++;
-		if (flag)
+		if (s[i] == dlmr)
 			break ;
 		i++;
 	}
-	p.str = malloc(sizeof(char) * j);
-	while ((k < j) && s[i + k])
+	cp = malloc(i + 1);
+	j = 0;
+	while(s[i + j])
 	{
-		p.str[k] = s[i + k];
-		k++;
+		cp[j] = s[i + j];
+		j++;
 	}
-	p.str_len = ft_strlen(p.str);
-	return (p);
+	cp[i + j] = '\0';
+	return (cp);
 }
 
-Parser	line_parse(char *s, char dlmr) // to return
+char	*line_parse(char *s, char dlmr)
 {
-	Parser	p;
+	char	*cp;
 	size_t	i;
 	size_t	j;
 
@@ -52,14 +67,14 @@ Parser	line_parse(char *s, char dlmr) // to return
 	j = 0;
 	while (s[i - 1] != dlmr && s[i])
 		i++;
-	p.str = malloc(sizeof(char) * i);
+	cp = malloc(i + 1);
 	while (j < i)
 	{
-		p.str[j] = s[j];
+		cp[j] = s[j];
 		j++;
 	}
-	p.str_len = ft_strlen(p.str);
-	return (p);
+	cp[j] = '\0';
+	return (cp);
 }
 
 /* #include <stdio.h>
@@ -67,7 +82,7 @@ Parser	line_parse(char *s, char dlmr) // to return
 int	main()
 {
 	char *str = "Hello\nWo\nrld";
-	printf("%s\n", line_parse(str, '\n').str);
-	printf("%s\n", truncated(str, '\n').str);
+	//printf("%s", line_parse(str, '\n'));
+	printf("%s", truncated(str, '\n'));
 	return (0);
 } */

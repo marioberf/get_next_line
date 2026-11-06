@@ -8,13 +8,9 @@
 #  define BUFFER_SIZE 67
 # endif
 
-typedef	struct
-{
-	size_t 	str_len;
-	char	*str;
-} Parser;
-
 char	*get_next_line(int fd);
-Parser	truncated(char *s, char dlmr);
-Parser	line_parse(char *s, char dlmr);
+size_t	ft_strlen(char *s);
+char	*join(char *buffer, char *stash);
+char	*truncated(char *s, char dlmr);
+char	*line_parse(char *s, char dlmr);
 #endif
