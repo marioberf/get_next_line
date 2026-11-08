@@ -2,57 +2,54 @@
 #include <stdio.h>
 #include <fcntl.h>
 
+static int	is_line(char *buffer, char dlmr)
+{
+	size_t	i;
+
+	i = 0;
+	if (!buffer)
+		return (0);
+	while (buffer[i])
+	{
+		if (buffer[i] == dlmr)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 char	*get_next_line(int fd)
 {
 	char		buffer[BUFFER_SIZE + 1];
 	static char	*stash;
+	char		*line;
 	ssize_t		bytes;
 
-	bytes = read(fd, buffer, BUFFER_SIZE);
-	buffer[BUFFER_SIZE + 1] = '\0';
-
-	if (bytes <= 0)
+	bytes = 1;
+	while (!is_line(buffer, '\n') && (bytes > 0))
+	{
+		bytes = read(fd, buffer, BUFFER_SIZE);
+		if (!stash)
+		{
+			stash = malloc(bytes + 1);
+		}
+		// stash = join(buffer, stash);
+		stash[bytes] = '\0';
+	}
+	if (bytes < 0)
+	{
+		free(stash);
+		stash = NULL;
 		return (NULL);
-	while (!buffer[ft_strlen(line_parse(buffer, '\n'))])
-		read(fd, buffer, BUFFER_SIZE);
-	stash = line_parse(buffer, '\n');
-	stash = join(buffer, stash);
+	}
+	line = malloc(ft_strlen(line_parse(stash, '\n')));
+	line = line_parse(stash, '\n');
+	stash = malloc(bytes + 1);
+	stash = truncated(buffer, '\n');
+	stash[bytes] = '\0';
+	return (line);
 
 }
-
-/* char	*get_next_line(int fd)
-{
-	static char	*buffer;
-	char	*stash;
-	int		bytes;
-
-	if (!buffer)
-	{
-		buffer = malloc(BUFFER_SIZE + 1);
-		bytes = read(fd, buffer, BUFFER_SIZE);
-		if (bytes < 0)
-		{
-			free(buffer);
-			return (NULL);
-		}
-		while (!buffer[line_parse(buffer,'\n').str_len])
-			read(fd, buffer, BUFFER_SIZE);
-		buffer[bytes] = '\0';
-		stash = malloc(truncated(buffer, '\n').str_len + line_parse(buffer, '\n').str_len);
-		stash = buffer;
-		return (line_parse(stash, '\n').str);
-	}
-	else
-	{
-		stash = malloc(truncated(buffer, '\n').str_len + line_parse(buffer, '\n').str_len);
-		// stash = buffer;
-		stash = join(buffer, stash);
-		buffer = malloc(truncated(buffer, '\n').str_len);
-		buffer = truncated(stash, '\n').str;
-		return (line_parse(buffer, '\n').str);
-	}
-
-} */
 
 /* int	main()
 {
