@@ -16,13 +16,19 @@ char	*join(char *stash, char *buffer)
 	size_t	j;
 	char	*str;
 
-	str = malloc(ft_strlen(stash) + ft_strlen(buffer) + 1);
 	i = 0;
 	j = 0;
-	while (i < ft_strlen(stash))
+	if (!stash)
+		str = malloc(ft_strlen(buffer) + 1);
+	else
 	{
-		str[i] = stash[i];
-		i++;
+		str = malloc(ft_strlen(stash) + ft_strlen(buffer) + 1);
+		while (i < ft_strlen(stash))
+		{
+
+			str[i] = stash[i];
+			i++;
+		}
 	}
 	while (j < ft_strlen(buffer))
 	{
@@ -44,17 +50,24 @@ char	*truncated(char *s, char dlmr)
 	while (s[i])
 	{
 		if (s[i] == dlmr)
+		{
+			i++;
 			break ;
+		}
 		i++;
 	}
-	cp = malloc(i + 1);
 	j = 0;
-	while(s[i + j])
+	while (s[i + j])
+		j++;
+	cp = malloc(j + 1);
+	j = 0;
+	while (s[i + j])
 	{
 		cp[j] = s[i + j];
 		j++;
 	}
-	cp[i + j] = '\0';
+	cp[j] = '\0';
+	free(s);
 	return (cp);
 }
 
@@ -66,7 +79,7 @@ char	*line_parse(char *s, char dlmr)
 
 	i = 0;
 	j = 0;
-	while (s[i] != dlmr)
+	while ((s[i] != dlmr) && s[i])
 	{
 		if (!s[i])
 			return (NULL);
@@ -83,7 +96,7 @@ char	*line_parse(char *s, char dlmr)
 	return (cp);
 }
 
-#include <stdio.h>
+/* #include <stdio.h>
 
 int	main()
 {
@@ -93,4 +106,4 @@ int	main()
 	printf("%s", line_parse(str, '\n'));
 	printf("%s\n", join(line_parse(str, '\n'), truncated(str, '\n')));
 	return (0);
-}
+} */

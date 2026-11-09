@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 
-static int	is_line(char *buffer, char dlmr)
+static int	in_line(char *buffer, char dlmr)
 {
 	size_t	i;
 
@@ -22,45 +22,37 @@ char	*get_next_line(int fd)
 {
 	char		buffer[BUFFER_SIZE + 1];
 	static char	*stash;
-	char		*line;
 	ssize_t		bytes;
+	char		*line;
 
-	bytes = 1;
-	while (!is_line(buffer, '\n') && (bytes > 0))
+	while (!in_line(buffer, '\n') && (bytes > 0))
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
-		if (!stash)
+		if (bytes < 0)
 		{
-			stash = malloc(bytes + 1);
+			free(stash);
+			stash = NULL;
+			return (NULL);
 		}
-		// stash = join(buffer, stash);
-		stash[bytes] = '\0';
+		buffer[bytes] = '\0';
+		stash = malloc(bytes + 1);
+		stash = join(stash, buffer);
 	}
-	if (bytes < 0)
-	{
-		free(stash);
-		stash = NULL;
-		return (NULL);
-	}
-	line = malloc(ft_strlen(line_parse(stash, '\n')));
 	line = line_parse(stash, '\n');
-	stash = malloc(bytes + 1);
-	stash = truncated(buffer, '\n');
-	stash[bytes] = '\0';
-	return (line);
-
+	stash = truncated(stash, '\n');
+	return (line); // free line es PDU
 }
 
-/* int	main()
+int	main()
 {
 	size_t	i;
 
 	int fd = open("test.txt", O_RDONLY);
 	i = 0;
-	while (i < 900)
+	while (i < 1)
 	{
 		printf("%s", get_next_line(fd));
 		i++;
 	}
 	return (0);	
-} */
+}

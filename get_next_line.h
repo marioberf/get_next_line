@@ -10,7 +10,7 @@
 
 char	*get_next_line(int fd);
 size_t	ft_strlen(char *s);
-char	*join(char *buffer, char *stash);
+char	*join(char *stash, char *buffer);
 char	*truncated(char *s, char dlmr);
 char	*line_parse(char *s, char dlmr);
 #endif
