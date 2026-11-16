@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 
-size_t	ft_strlen(char *s)
+size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
@@ -18,17 +18,11 @@ char	*join(char *stash, char *buffer)
 
 	i = 0;
 	j = 0;
-	if (!stash)
-		str = malloc(ft_strlen(buffer) + 1);
-	else
+	str = malloc(ft_strlen(stash) + ft_strlen(buffer) + 1);
+	while (i < ft_strlen(stash))
 	{
-		str = malloc(ft_strlen(stash) + ft_strlen(buffer) + 1);
-		while (i < ft_strlen(stash))
-		{
-
-			str[i] = stash[i];
-			i++;
-		}
+		str[i] = stash[i];
+		i++;
 	}
 	while (j < ft_strlen(buffer))
 	{
@@ -36,7 +30,6 @@ char	*join(char *stash, char *buffer)
 		j++;
 	}
 	str[i + j] = '\0';
-	free(stash);
 	return (str);
 }
 
@@ -91,8 +84,9 @@ char	*line_parse(char *s, char dlmr)
 		cp[j] = s[j];
 		j++;
 	}
-	cp[j] = '\n';
-	cp[j + 1] = '\0';
+	if (s[j] == dlmr)
+		cp[j++] = '\n';
+	cp[j] = '\0';
 	return (cp);
 }
 
@@ -100,10 +94,10 @@ char	*line_parse(char *s, char dlmr)
 
 int	main()
 {
-	char *str = "hello\nworld\n123\n321";
-	printf("%s", line_parse(str, '\n'));
-	printf("%s", truncated(str, '\n'));
-	printf("%s", line_parse(str, '\n'));
-	printf("%s\n", join(line_parse(str, '\n'), truncated(str, '\n')));
+	char *str = "hello\nworld\n124\n321";
+	char *str3 = "\nhi";
+	char *res;
+	res = join(str, str3);
+	printf("%s\n", res);
 	return (0);
 } */

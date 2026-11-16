@@ -9,7 +9,7 @@
 # endif
 
 char	*get_next_line(int fd);
-size_t	ft_strlen(char *s);
+size_t	ft_strlen(const char *s);
 char	*join(char *stash, char *buffer);
 char	*truncated(char *s, char dlmr);
 char	*line_parse(char *s, char dlmr);

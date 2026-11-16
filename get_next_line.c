@@ -24,6 +24,7 @@ char	*get_next_line(int fd)
 	static char	*stash;
 	ssize_t		bytes;
 	char		*line;
+	int			i;
 
 	while (!in_line(buffer, '\n') && (bytes > 0))
 	{
@@ -36,7 +37,17 @@ char	*get_next_line(int fd)
 		}
 		buffer[bytes] = '\0';
 		stash = malloc(bytes + 1);
-		stash = join(stash, buffer);
+		if (!stash)
+		{
+			i = 0;
+			while (buffer[i])
+			{
+				stash[i] = buffer[i];
+				i++;
+			}
+		}
+		else
+			stash = join(stash, buffer);
 	}
 	line = line_parse(stash, '\n');
 	stash = truncated(stash, '\n');
@@ -49,7 +60,7 @@ int	main()
 
 	int fd = open("test.txt", O_RDONLY);
 	i = 0;
-	while (i < 1)
+	while (i < 2)
 	{
 		printf("%s", get_next_line(fd));
 		i++;
