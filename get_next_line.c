@@ -20,50 +20,53 @@ static int	in_line(char *buffer, char dlmr)
 
 char	*get_next_line(int fd)
 {
-	char		buffer[BUFFER_SIZE + 1];
+	char		*buffer = NULL;
 	static char	*stash;
 	ssize_t		bytes;
 	char		*line;
-	int			i;
 
-	while (!in_line(buffer, '\n') && (bytes > 0))
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	bytes = 1;
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	while (!in_line(stash, '\n') && bytes > 0)
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
 		if (bytes < 0)
 		{
 			free(stash);
+			free(buffer);
 			stash = NULL;
 			return (NULL);
 		}
 		buffer[bytes] = '\0';
-		stash = malloc(bytes + 1);
-		if (!stash)
-		{
-			i = 0;
-			while (buffer[i])
-			{
-				stash[i] = buffer[i];
-				i++;
-			}
-		}
-		else
-			stash = join(stash, buffer);
+		stash = join(stash, buffer);
+	}
+	free(buffer);
+	if (!stash || !*stash)
+	{
+		free(stash);
+		stash = NULL;
+		return (NULL);
 	}
 	line = line_parse(stash, '\n');
 	stash = truncated(stash, '\n');
-	return (line); // free line es PDU
+	return (line);
 }
 
-int	main()
+/* int	main()
 {
 	size_t	i;
 
 	int fd = open("test.txt", O_RDONLY);
 	i = 0;
-	while (i < 2)
+	while (i < 16299)
 	{
 		printf("%s", get_next_line(fd));
 		i++;
 	}
+	close(fd);
 	return (0);	
-}
+} */

@@ -16,9 +16,17 @@ char	*join(char *stash, char *buffer)
 	size_t	j;
 	char	*str;
 
+	if (!stash)
+		stash = "";
 	i = 0;
 	j = 0;
 	str = malloc(ft_strlen(stash) + ft_strlen(buffer) + 1);
+	if (!str)
+	{
+		if (i > 0)
+			free(stash);
+		return (NULL);
+	}
 	while (i < ft_strlen(stash))
 	{
 		str[i] = stash[i];
@@ -30,6 +38,8 @@ char	*join(char *stash, char *buffer)
 		j++;
 	}
 	str[i + j] = '\0';
+	if (i > 0)
+		free(stash);
 	return (str);
 }
 
@@ -52,7 +62,17 @@ char	*truncated(char *s, char dlmr)
 	j = 0;
 	while (s[i + j])
 		j++;
-	cp = malloc(j + 1);
+	if (!s[i])
+	{
+		free(s);
+		return (NULL);
+	}
+	cp = malloc(ft_strlen(s + i) + 1);
+	if (!cp)
+	{
+		free(s);
+		return (NULL);
+	}
 	j = 0;
 	while (s[i + j])
 	{
@@ -79,6 +99,8 @@ char	*line_parse(char *s, char dlmr)
 		i++;
 	}
 	cp = malloc(i + 2);
+	if (!cp)
+		return (NULL);
 	while (j < i)
 	{
 		cp[j] = s[j];
