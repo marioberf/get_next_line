@@ -58,14 +58,14 @@ char	*get_next_line(int fd)
 
 /* int	main()
 {
-	size_t	i;
+	char	*c = "";
 
-	int fd = open("test.txt", O_RDONLY);
-	i = 0;
-	while (i < 16299)
+	int fd = open("test1.txt", O_RDONLY);
+	c = get_next_line(fd);
+	while (c)
 	{
-		printf("%s", get_next_line(fd));
-		i++;
+		printf("%s", c);
+		c = get_next_line(fd);
 	}
 	close(fd);
 	return (0);	

@@ -93,11 +93,7 @@ char	*line_parse(char *s, char dlmr)
 	i = 0;
 	j = 0;
 	while ((s[i] != dlmr) && s[i])
-	{
-		if (!s[i])
-			return (NULL);
 		i++;
-	}
 	cp = malloc(i + 2);
 	if (!cp)
 		return (NULL);
@@ -107,7 +103,7 @@ char	*line_parse(char *s, char dlmr)
 		j++;
 	}
 	if (s[j] == dlmr)
-		cp[j++] = '\n';
+		cp[j++] = dlmr;
 	cp[j] = '\0';
 	return (cp);
 }
