@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mariober <mariober@student.42madrid.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/21 09:55:34 by mariober          #+#    #+#             */
+/*   Updated: 2026/11/21 09:55:37 by mariober         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-
-# include <unistd.h>
-# include <stdlib.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 67
 # endif
+
+# include <unistd.h>
+# include <stdlib.h>
 
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *s);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mariober <mariober@student.42madrid.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/20 18:35:17 by mariober          #+#    #+#             */
+/*   Updated: 2026/11/20 18:35:18 by mariober         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 size_t	ft_strlen(const char *s)
@@ -22,11 +34,7 @@ char	*join(char *stash, char *buffer)
 	j = 0;
 	str = malloc(ft_strlen(stash) + ft_strlen(buffer) + 1);
 	if (!str)
-	{
-		if (i > 0)
-			free(stash);
-		return (NULL);
-	}
+		return (free(stash), NULL);
 	while (i < ft_strlen(stash))
 	{
 		str[i] = stash[i];
@@ -43,11 +51,9 @@ char	*join(char *stash, char *buffer)
 	return (str);
 }
 
-char	*truncated(char *s, char dlmr)
+size_t	first_line_c(char *s, char dlmr)
 {
-	char	*cp;
 	size_t	i;
-	size_t	j;
 
 	i = 0;
 	while (s[i])
@@ -59,9 +65,16 @@ char	*truncated(char *s, char dlmr)
 		}
 		i++;
 	}
-	j = 0;
-	while (s[i + j])
-		j++;
+	return (i);
+}
+
+char	*truncated(char *s, char dlmr)
+{
+	char	*cp;
+	size_t	i;
+	size_t	j;
+
+	i = first_line_c(s, dlmr);
 	if (!s[i])
 	{
 		free(s);
