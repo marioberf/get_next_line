@@ -120,15 +120,3 @@ char	*line_parse(char *s, char dlmr)
 	cp[j] = '\0';
 	return (cp);
 }
-
-/* #include <stdio.h>
-
-int	main()
-{
-	char *str = "hello\nworld\n124\n321";
-	char *str3 = "\nhi";
-	char *res;
-	res = join(str, str3);
-	printf("%s\n", res);
-	return (0);
-} */

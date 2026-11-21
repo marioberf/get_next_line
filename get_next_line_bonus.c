@@ -80,20 +80,3 @@ char	*get_next_line(int fd)
 	stash[fd] = truncated(stash[fd], '\n');
 	return (line);
 }
-
-/* int	main()
-{
-	char	*c;
-	int fd = open("test1.txt", O_RDONLY);
-	int fd2= open("test2.txt", O_RDONLY);
-	while ((c = get_next_line(fd)))
-	{
-		printf("%s", c);
-		//c = get_next_line(fd);
-		free(c);
-	}
-	printf("%s\n", get_next_line(fd2));
-	close(fd);
-	close(fd2);
-	return (0);	
-} */
