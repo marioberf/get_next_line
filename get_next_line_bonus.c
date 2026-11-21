@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-#include <fcntl.h>
-#include <stdio.h>
 
 static int	in_line(char *buffer, char dlmr)
 {
@@ -57,11 +55,11 @@ static int	eof(char **stash)
 char	*get_next_line(int fd)
 {
 	char		*buffer;
-	static char	*stash[4096];
+	static char	*stash[1024];
 	ssize_t		bytes;
 	char		*line;
 
-	if (fd < 0 || fd >= 4096 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
 	bytes = 1;
 	buffer = malloc(BUFFER_SIZE + 1);
@@ -87,12 +85,15 @@ char	*get_next_line(int fd)
 {
 	char	*c;
 	int fd = open("test1.txt", O_RDONLY);
+	int fd2= open("test2.txt", O_RDONLY);
 	while ((c = get_next_line(fd)))
 	{
 		printf("%s", c);
 		//c = get_next_line(fd);
 		free(c);
 	}
+	printf("%s\n", get_next_line(fd2));
 	close(fd);
+	close(fd2);
 	return (0);	
 } */
